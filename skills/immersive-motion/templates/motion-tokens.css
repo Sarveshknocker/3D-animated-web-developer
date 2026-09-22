@@ -1,0 +1,27 @@
+/* Motion tokens — single source of truth for CSS and JS (see motion.ts). */
+:root {
+  --dur-xs: 120ms;
+  --dur-sm: 240ms;
+  --dur-md: 480ms;
+  --dur-lg: 800ms;
+  --dur-xl: 1200ms;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: linear(0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163 27%, 1.154, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1);
+
+  --reveal-distance: 24px;
+  --reveal-stagger: 60ms;
+}
+
+/* Safety net: if any animation slips through without a reduced-motion branch, neutralise it. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

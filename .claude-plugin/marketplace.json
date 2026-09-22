@@ -1,0 +1,11 @@
+{
+  "name": "jarvis-immersive",
+  "owner": { "name": "Sarvesh" },
+  "plugins": [
+    {
+      "name": "jarvis-immersive",
+      "source": "./",
+      "description": "Deep-dives your project and builds unique, MNC-grade 3D / animated websites."
+    }
+  ]
+}

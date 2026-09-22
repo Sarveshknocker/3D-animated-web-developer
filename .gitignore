@@ -1,0 +1,4 @@
+node_modules/
+.immersive/
+*.log
+.DS_Store
