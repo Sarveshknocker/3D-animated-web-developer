@@ -26,14 +26,14 @@ your project ──► 1. Deep dive ──► 2. Creative direction ──► 3.
 Requires Node ≥ 18.
 
 ```bash
-git clone https://github.com/Sarveshknocker/jarvis-immersive.git
-node jarvis-immersive/bin/jarvis-immersive.mjs init path/to/your-project
+git clone https://github.com/Sarveshknocker/3D-animated-web-developer.git
+node 3D-animated-web-developer/bin/jarvis-immersive.mjs init path/to/your-project
 ```
 
 Or, once this repo is on GitHub, without cloning:
 
 ```bash
-npx github:Sarveshknocker/jarvis-immersive init
+npx github:Sarveshknocker/3D-animated-web-developer init
 ```
 
 `init` copies the kit to `your-project/.immersive-kit/` and writes one small instruction file per AI tool. In files you already have (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, Copilot instructions), it adds its section between markers and leaves your own text alone.
@@ -50,7 +50,7 @@ npx github:Sarveshknocker/jarvis-immersive init
 
 Only some tools: `init . --tools agents,cursor,claude`. To update: `update`. To uninstall: `remove` (your `.immersive/` design docs are kept).
 
-**Claude Code plugin** (alternative): `/plugin marketplace add Sarveshknocker/jarvis-immersive` then `/plugin install jarvis-immersive`.
+**Claude Code plugin** (alternative): `/plugin marketplace add Sarveshknocker/3D-animated-web-developer` then `/plugin install jarvis-immersive@jarvis-immersive`.
 
 ## Use it
 Open your project in your AI tool and say:

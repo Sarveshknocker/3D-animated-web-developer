@@ -6,7 +6,7 @@
 //   node bin/jarvis-immersive.mjs remove [targetDir]   (removes kit + instruction blocks; leaves .immersive/ docs)
 //   node bin/jarvis-immersive.mjs analyze|audit|dice ... (proxies to the kit scripts)
 //
-// Or without cloning:  npx github:Sarveshknocker/jarvis-immersive init
+// Or without cloning:  npx github:Sarveshknocker/3D-animated-web-developer init
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -1,7 +1,7 @@
 {
   "name": "jarvis-immersive",
   "version": "0.1.0",
-  "repository": "github:Sarveshknocker/jarvis-immersive",
+  "repository": "github:Sarveshknocker/3D-animated-web-developer",
   "description": "Drop-in kit that makes any AI coding assistant deep-dive your project and build unique, MNC-grade 3D / animated websites.",
   "type": "module",
   "bin": {
