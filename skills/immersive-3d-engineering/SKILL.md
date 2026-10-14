@@ -22,13 +22,26 @@ Version guidance: use the latest stable three.js (r17x+) and R3F v9 (React 19) /
 - `templates/react-r3f/` — `ImmersiveStage.tsx` (lazy + tiers + fallback + pause), `Scene.example.tsx`, `useDeviceTier.ts`, `useReducedMotion.ts`, `webgl.ts`, `BrandGradientMaterial.ts` (token-driven shader).
 - `templates/vanilla/immersive-stage.js` — the same guarantees without a framework.
 
-Every scene must provide:
+Every scene must provide (the inspector in `immersive-inspect` checks items 1, 3, 4 and context loss in a real browser):
 1. **Poster fallback** of identical size (also used while loading, for no-WebGL, reduced motion if the scene is heavy, and on context loss).
 2. **Tier config** (`high | mid | low | static`) that controls DPR, particle counts, post-processing, shadows.
 3. **Visibility pause**: IntersectionObserver + `visibilitychange` → `frameloop="never"`/`setAnimationLoop(null)`.
 4. **Motion pause** (user toggle) and reduced-motion behaviour.
 5. **Cleanup**: dispose geometries/materials/textures/render targets (R3F does this for declarative objects; you must for imperatively created ones).
 6. **Error boundary** that falls back to the poster.
+
+## Finding assets (free, CC0)
+No model, HDRI or material yet? Search Poly Haven and ambientCG (both CC0: free for commercial use, no attribution required) before inventing one:
+```bash
+node <kit>/skills/immersive-3d-engineering/scripts/assets.mjs search "studio softbox" --type hdri
+node <kit>/skills/immersive-3d-engineering/scripts/assets.mjs search "brushed metal" --type texture
+node <kit>/skills/immersive-3d-engineering/scripts/assets.mjs get polyhaven:studio_small_09 --res 1k --dir public/assets/3d
+node <kit>/skills/immersive-3d-engineering/scripts/assets.mjs credits      # table for HANDOVER.md
+```
+- HDRIs light the scene (`scene.environment` / drei `<Environment files>`); 1k is enough for reflections, 2k only if it is visible.
+- Textures arrive as PBR maps; models as glTF with their textures. Run them through the pipeline below before shipping.
+- Every download is recorded in `.immersive/ASSET_CREDITS.json` (source, author, licence, files). Never present a library asset as the brand's own product; the brand's real product needs its real model.
+- Downloads are https-only, size-capped (`--max-mb`), and archive paths are sanitised.
 
 ## Asset pipeline
 ```bash

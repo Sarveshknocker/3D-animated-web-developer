@@ -1,0 +1,21 @@
+{
+  "name": "jarvis-immersive",
+  "interface": {
+    "displayName": "Jarvis Immersive"
+  },
+  "plugins": [
+    {
+      "name": "jarvis-immersive",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sarveshknocker/3D-animated-web-developer.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    }
+  ]
+}

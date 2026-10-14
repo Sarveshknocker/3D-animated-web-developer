@@ -17,7 +17,11 @@ Every **FAIL** must be fixed. Every **WARN** is fixed or explicitly justified in
 Run the project's own scripts (see `package.json`): lint, typecheck, test, build. The build must pass with zero new warnings. Report the size of the lazy 3D chunk from the build output (or a bundle analyzer).
 
 ## 3. Runtime gates (browser)
-Launch the dev/preview server and check, taking screenshots when you can:
+Run the real-browser inspector on the production build first; it automates most of the table below (see `immersive-inspect`):
+```bash
+node <kit>/skills/immersive-inspect/scripts/inspect.mjs <url | dist/>
+```
+Then check by hand what it cannot judge (route changes, HMR, a screen reader), and use this table when no browser can be launched:
 | Check | How | Pass criteria |
 |---|---|---|
 | Desktop render | 1440×900 | Scene renders, no console errors, ≥ 55 fps steady |
@@ -36,5 +40,8 @@ npx @axe-core/cli http://localhost:3000
 ```
 Targets are in `<kit>/skills/mnc-web-standards/references/checklist.md`. Record results in the budgets table of EXPERIENCE_SPEC.md.
 
-## 5. Report
+## 5. Look
+Critique the inspector's screenshots with `immersive-inspect/references/critique.md` (three rounds at most). Gates prove nothing is broken; the critique decides whether it is good.
+
+## 6. Report
 Output a table: gate → status → evidence (numbers, file:line) → fix. Order by severity. For an independent review, use `<kit>/agents/quality-auditor.md` as a sub-agent brief.

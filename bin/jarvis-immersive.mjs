@@ -154,6 +154,8 @@ switch (cmd) {
   case 'audit': runScript('skills/immersive-audit/scripts/audit.mjs', rest); break;
   case 'dice': runScript('skills/immersive-creative-direction/scripts/concept-dice.mjs', rest); break;
   case 'optimize': runScript('skills/immersive-3d-engineering/scripts/optimize-assets.mjs', rest); break;
+  case 'inspect': runScript('skills/immersive-inspect/scripts/inspect.mjs', rest); break;
+  case 'assets': runScript('skills/immersive-3d-engineering/scripts/assets.mjs', rest); break;
   default:
     console.log(`Jarvis Immersive — MNC-grade 3D/animated website kit for any AI coding tool
 
@@ -164,5 +166,7 @@ Commands:
   analyze [dir]       profile a project        → .immersive/project-profile.{json,md}
   audit  [dir]        static quality gates     [--json] [--strict]
   dice   "<name>" [n] divergent concept sparks
-  optimize <in> <out> compress GLB/GLTF assets [--ktx2]`);
+  optimize <in> <out> compress GLB/GLTF assets [--ktx2]
+  inspect <url|dir>   real-browser gates + screenshots [--min-fps N] [--skip …] [--json]
+  assets search "<q>" | get <src>:<id> | credits   CC0 HDRIs, textures, models`);
 }

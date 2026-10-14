@@ -19,7 +19,9 @@ your project ──► 1. Deep dive ──► 2. Creative direction ──► 3.
 | New stack bolted on | Built in your framework (Next, Astro, Nuxt, SvelteKit, Angular, React, static/WordPress) with your tokens and conventions |
 | 5 MB bundle, blank screen on old phones | Poster-first, lazy 3D, device tiers, WebGL fallback, context-loss recovery |
 | Ignores accessibility | Reduced motion, pause control, keyboard access, DOM content, WCAG 2.2 AA checklist |
-| "Looks done" | Static audit + build + Lighthouse + axe gates; numbers written to HANDOVER.md |
+| "Looks done" | A real headless browser runs the page at 3 widths, with reduced motion, without WebGL, keyboard-only and after a forced GPU context loss; screenshots are critiqued and fixed in a loop |
+| Idea from the category ("a fintech site") | A subject inventory of 8–12 facts only your brand has, and an idea sentence that must fail the competitor swap |
+| Stock HDRIs and textures of unknown origin | CC0 assets from Poly Haven and ambientCG, downloaded safely and recorded in a credits file |
 
 ## Install into a project
 
@@ -52,6 +54,8 @@ Only some tools: `init . --tools agents,cursor,claude`. To update: `update`. To 
 
 **Claude Code plugin** (alternative): `/plugin marketplace add Sarveshknocker/3D-animated-web-developer` then `/plugin install jarvis-immersive@jarvis-immersive`.
 
+**Codex plugin**: the repo ships `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json`. **Any skills-compatible agent**: `npx skills add Sarveshknocker/3D-animated-web-developer` copies the skills into the agent's skills folder.
+
 ## Use it
 Open your project in your AI tool and say:
 
@@ -65,15 +69,18 @@ skills/
   immersive-build/              orchestrator: 6-phase workflow, pattern catalogue, spec template
   immersive-deep-dive/          project analysis → PROJECT_BRIEF.md   (scripts/analyze-project.mjs)
   immersive-creative-direction/ originality engine: mechanics library, cliché blacklist, rubric (scripts/concept-dice.mjs)
-  immersive-3d-engineering/     stack adapters, perf rules, R3F + vanilla templates (scripts/optimize-assets.mjs)
+  immersive-3d-engineering/     stack adapters, perf rules, R3F + vanilla templates (scripts/optimize-assets.mjs, scripts/assets.mjs)
   immersive-motion/             motion tokens, GSAP/Lenis/SplitText/pinned-story templates, CSS scroll-driven reveals
   mnc-web-standards/            the ten laws + 10-section production checklist
   immersive-audit/              static + build + runtime + lab gates   (scripts/audit.mjs)
+  immersive-inspect/            real-browser gates, screenshots, critique loop (scripts/inspect.mjs)
 agents/                         role briefs: project-analyst, creative-director, quality-auditor
 adapters/entry.md               the instruction block written into each AI tool's file
 bin/jarvis-immersive.mjs        installer + script runner
 prompts/                        ready-to-paste prompts, incl. chat-only AIs
-tests/run.mjs                   end-to-end tests (npm test)
+evals/                          blind with-kit vs baseline evaluation cases
+research/BENCHMARK.md           what we learned from the top open-source projects
+tests/run.mjs                   end-to-end tests incl. real-browser and mock-API tests (npm test)
 ```
 
 ## CLI
@@ -82,16 +89,38 @@ node bin/jarvis-immersive.mjs analyze  <project>          # → .immersive/proje
 node bin/jarvis-immersive.mjs audit    <project> [--strict] [--json]
 node bin/jarvis-immersive.mjs dice     "Brand Name" 6     # divergent concept sparks (seeded)
 node bin/jarvis-immersive.mjs optimize <in> <out> [--ktx2] # GLB compression via gltf-transform
+node bin/jarvis-immersive.mjs inspect  <url | dist/>      # real-browser gates + screenshots → .immersive/inspect/
+node bin/jarvis-immersive.mjs assets   search "studio" --type hdri | get polyhaven:<id> | credits
 ```
+
+### The inspector
+Zero dependencies: it drives the Chrome, Edge or Chromium you already have over the DevTools Protocol (Node ≥ 18).
+
+| Pass | What it proves |
+|---|---|
+| Desktop 1440, tablet 768, mobile 390 (touch, 2× DPR) | No exceptions, console errors, failed requests or horizontal scroll; CLS/LCP/blocking time; the WebGL canvas really renders; FPS, draw calls per frame, render DPR, bytes; alt text, control names, headings, canvas semantics |
+| Reduced motion | The 3D frame holds still and every word is still visible |
+| WebGL disabled | No crash, the same content, a designed poster |
+| Keyboard only | No focus trap; focus visible |
+| WebGL context loss | Losing and restoring the GPU context does not throw |
+
+It saves fold and full-page screenshots for each pass, which the AI then scores with a jury-style rubric (design 40 / usability 30 / creativity 20 / content 10, with caps) and fixes in up to three rounds.
 Tip: add `audit --strict` to CI to stop regressions.
 
 ## Honest limits
 - The kit makes the AI far more disciplined and creative, but **3D assets are still the bottleneck**. For product reveals you need a real model (from CAD, a 3D artist, or photogrammetry). The creative engine prefers concepts that work with the assets you actually have.
-- The static audit uses heuristics (pattern matching). It catches common mistakes but doesn't replace Lighthouse, axe and a manual keyboard + reduced-motion check. The audit skill runs those as well.
+- The static audit uses heuristics (pattern matching). The inspector measures the running page, but headless timing is lab data: on machines without a GPU, Chrome renders WebGL in software and FPS is not representative (the report says so). Confirm vitals with Lighthouse and field data.
+- The inspector needs an installed Chromium-family browser; without one it exits with code 3 and the audit skill falls back to the manual checklist.
 - Template code targets React 18/19, three r17x, R3F v8/v9, GSAP 3.13+. Check versions against your project.
+
+## Related kits
+[The-protectors-](https://github.com/Sarveshknocker/The-protectors-) (security) · [The-Ai-Maker-](https://github.com/Sarveshknocker/The-Ai-Maker-) (AI features) · [The-Hardware-engineering](https://github.com/Sarveshknocker/The-Hardware-engineering) (firmware/hardware) · [Idea Enhancer](https://github.com/Sarveshknocker/-Idea-Enhancer-and-Value-Maximiser) · [The-Reconstructor](https://github.com/Sarveshknocker/The-Reconstructor) (architecture recovery).
+
+## Credits
+Ideas adapted (re-implemented, not copied) from open-source projects are listed in [CREDITS.md](CREDITS.md); the comparison is in [research/BENCHMARK.md](research/BENCHMARK.md).
 
 ## Develop the kit
 ```bash
-npm test
+npm test        # browser tests run when Chrome/Edge/Chromium is installed (JARVIS_CHROME to point at one)
 ```
 License: MIT.

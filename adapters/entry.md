@@ -11,6 +11,7 @@ This project has the **Jarvis Immersive kit** installed at `{{KIT}}/`. When the 
 | Implement motion / scroll / transitions | `{{KIT}}/skills/immersive-motion/SKILL.md` |
 | Production constraints (perf, a11y, SEO, security) | `{{KIT}}/skills/mnc-web-standards/SKILL.md` |
 | Review / harden before shipping | `{{KIT}}/skills/immersive-audit/SKILL.md` |
+| Watch it run in a real browser + look-and-fix loop | `{{KIT}}/skills/immersive-inspect/SKILL.md` |
 
 Sub-agent role briefs (if your tool supports sub-agents or parallel tasks): `{{KIT}}/agents/`.
 Scripts are dependency-free Node ≥ 18: run them with your terminal tool (or ask the user to run them).
@@ -24,3 +25,4 @@ Hard rules, always:
 4. Honour `prefers-reduced-motion`, keep keyboard access, never hijack scroll.
 5. Meet the budgets: LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1, lazy 3D chunk ≤ 250 KB gz.
 6. Aim for original: no template clichés; the visitor must have something satisfying to *do*.
+7. Done means measured: the inspector exits 0 and you have looked at its screenshots. Never claim a check you did not run.

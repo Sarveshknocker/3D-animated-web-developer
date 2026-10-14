@@ -1,0 +1,73 @@
+{
+  "kit": "jarvis-immersive",
+  "how_to_run": "For each case, give the prompt and the fixture to two fresh agents in identical sandboxes: one with the kit installed (`init`), one without (the baseline). Build both, serve the production build, run skills/immersive-inspect/scripts/inspect.mjs on each and keep the FAIL/WARN counts. A judge who does not know which is which scores both sets of screenshots with skills/immersive-inspect/references/critique.md. Then check every grader below against the kit run's files and transcript. Record results in evals/RESULTS.md with the date, agent and model.",
+  "cases": [
+    {
+      "id": "static-ceramics-studio",
+      "kind": "build",
+      "fixture": "static HTML/CSS site with a brand stylesheet, no build step",
+      "prompt": "Make the homepage of this ceramics studio feel premium and memorable with an interactive 3D hero. We fire stoneware at 1,280 °C in a wood kiln twice a year in Mashiko. Keep it fast on phones.",
+      "graders": [
+        "inspect.mjs exits 0 on the result at 1440/768/390",
+        ".immersive/CONCEPTS.md has an inventory of 8+ items drawn from the brief (temperature, wood kiln, twice a year, Mashiko)",
+        "The idea sentence fails the competitor swap (uses something only this studio has)",
+        "The visitor has a verb with a visible consequence (not scroll-only)",
+        "three.js is loaded lazily after first paint; the poster is the LCP element",
+        "No-WebGL and reduced-motion screenshots show complete content and a designed still",
+        "No invented testimonials, logos or statistics"
+      ],
+      "expected": "A vanilla three.js island loaded on idle, a poster fallback of identical size, a kiln/glaze interaction from the subject, and a HANDOVER.md with measurements and critique scores."
+    },
+    {
+      "id": "next-fintech-hero",
+      "kind": "build",
+      "fixture": "Next.js 15 app router + Tailwind 4 + TypeScript, existing design tokens in globals.css",
+      "prompt": "Build a 3D landing hero for our invoicing product. Use our existing brand.",
+      "graders": [
+        "Uses @react-three/fiber via next/dynamic with ssr:false inside a 'use client' boundary; no new styling system added",
+        "Colours in the scene come from the existing CSS tokens (uniforms read from CSS variables)",
+        "audit.mjs has zero FAIL; tsc and next build pass",
+        "inspect.mjs exits 0; draws/frame within budget on mobile",
+        "Copy deck headlines are two lines or fewer at 390px in the screenshots"
+      ],
+      "expected": "A native R3F island with tiers, pause control and context-loss handling; no framework migration."
+    },
+    {
+      "id": "astro-portfolio-scroll",
+      "kind": "build",
+      "fixture": "Astro 5 site with Markdown content collections",
+      "prompt": "I want my portfolio to feel like an award-winning site with scroll storytelling between projects.",
+      "graders": [
+        "Islands use client:visible / client:idle; no full-page hydration",
+        "Scroll is never hijacked; content readable with JavaScript disabled",
+        "Every section carries the idea (not a distinctive hero followed by stock blocks) per the critique pass 8",
+        "Reduced-motion pass: no scrubbed or parallax motion, all text visible"
+      ],
+      "expected": "Pinned story built with the kit's motion templates and a still fallback per section."
+    },
+    {
+      "id": "harden-existing-site",
+      "kind": "review",
+      "fixture": "an existing three.js landing page with no reduced-motion handling, no fallback and a 4 MB uncompressed GLB",
+      "prompt": "Audit our 3D homepage before launch and fix what would fail an enterprise review.",
+      "graders": [
+        "Runs audit.mjs and inspect.mjs before changing anything and reports their findings",
+        "Fixes: reduced motion, WebGL fallback, context loss, DPR clamp, compresses the GLB with optimize-assets",
+        "Re-runs both tools and shows the before/after numbers",
+        "Does not redesign the page or change its concept"
+      ],
+      "expected": "A findings table ordered by severity with file:line evidence, the fixes, and re-measured numbers."
+    },
+    {
+      "id": "should-not-trigger-dashboard",
+      "kind": "negative",
+      "fixture": "React admin dashboard",
+      "prompt": "Add a date-range filter to the orders table.",
+      "graders": [
+        "The kit's build workflow does not start (no .immersive/ folder, no 3D dependencies added)",
+        "The change is a normal, minimal component edit"
+      ],
+      "expected": "The agent does the small task without invoking the immersive pipeline."
+    }
+  ]
+}

@@ -37,3 +37,15 @@ Step 1: ask me for the files listed in the deep-dive skill's Step 2 that you nee
 Step 2: write the PROJECT_BRIEF. Step 3: propose concepts. Step 4: give me complete files to paste,
 one at a time, native to my stack. Follow the MNC checklist for every file.
 ```
+
+### Inspect in a real browser
+```
+Using .immersive-kit/skills/immersive-inspect/SKILL.md, build for production, run the inspector on the result,
+fix every FAIL, then critique the screenshots and do up to three look-and-fix rounds. Put the numbers in HANDOVER.md.
+```
+
+### Find CC0 assets for the scene
+```
+Using the asset finder in .immersive-kit/skills/immersive-3d-engineering/SKILL.md, find a studio HDRI and a brushed-metal
+material that suit our concept, download them at 1k, wire them into the scene and add the credits to HANDOVER.md.
+```

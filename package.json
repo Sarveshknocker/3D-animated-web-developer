@@ -1,6 +1,6 @@
 {
   "name": "jarvis-immersive",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "repository": "github:Sarveshknocker/3D-animated-web-developer",
   "description": "Drop-in kit that makes any AI coding assistant deep-dive your project and build unique, MNC-grade 3D / animated websites.",
   "type": "module",
@@ -14,7 +14,10 @@
     "adapters",
     ".claude-plugin",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    ".codex-plugin",
+    ".agents",
+    "evals"
   ],
   "engines": {
     "node": ">=18"
@@ -22,6 +25,21 @@
   "scripts": {
     "test": "node tests/run.mjs"
   },
-  "keywords": ["threejs", "react-three-fiber", "gsap", "webgl", "ai-agents", "agents-md", "claude-code", "cursor", "copilot", "codex"],
+  "keywords": [
+    "threejs",
+    "react-three-fiber",
+    "gsap",
+    "webgl",
+    "ai-agents",
+    "agents-md",
+    "claude-code",
+    "cursor",
+    "copilot",
+    "codex",
+    "agent-skills",
+    "webgl-testing",
+    "accessibility",
+    "chrome-devtools-protocol"
+  ],
   "license": "MIT"
 }

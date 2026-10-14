@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Good immersive fixture</title>
+<style>
+  :root { --ink: #111; --ground: #f4f1ea; --accent: #c2410c; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 18px/1.5 system-ui, sans-serif; color: var(--ink); background: var(--ground); }
+  .stage { position: relative; aspect-ratio: 16 / 9; max-height: 70vh; width: 100%; background: #2b2118 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Ccircle cx='8' cy='4.5' r='3' fill='%23c2410c'/%3E%3C/svg%3E") center/contain no-repeat; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  main { padding: 32px 24px; max-width: 60ch; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .reveal { transition: opacity .4s, transform .4s; }
+  .js .reveal:not(.in) { opacity: 0; transform: translateY(16px); }
+  @media (prefers-reduced-motion: reduce) { .reveal { transition: none; } .js .reveal:not(.in) { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<div class="stage" aria-hidden="true"><canvas></canvas></div>
+<main>
+  <h1>Kiln-fired glaze, live</h1>
+  <p class="reveal">Turn the dial to see how the glaze changes colour as the kiln heats.</p>
+  <button type="button" data-motion-toggle aria-pressed="false">Pause motion</button>
+  <h2 class="reveal">How it works</h2>
+  <p class="reveal">Every colour on this page comes from a real firing log.</p>
+  <a href="#contact">Contact the studio</a>
+  <div style="height: 120vh"></div>
+  <h2 id="contact" class="reveal">Contact</h2>
+  <p class="reveal">studio@example.com</p>
+</main>
+<script>
+  document.documentElement.classList.add('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }));
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  const canvas = document.querySelector('canvas');
+  const gl = canvas.getContext('webgl');
+  let paused = reduce;
+  document.querySelector('[data-motion-toggle]').addEventListener('click', (e) => { paused = !paused; e.target.setAttribute('aria-pressed', String(paused)); if (!paused) requestAnimationFrame(frame); });
+  if (gl) {
+    const dpr = Math.min(devicePixelRatio, 2);
+    const resize = () => { canvas.width = canvas.clientWidth * dpr; canvas.height = canvas.clientHeight * dpr; gl.viewport(0, 0, canvas.width, canvas.height); };
+    resize(); addEventListener('resize', resize);
+    const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return o; };
+    const prog = gl.createProgram();
+    gl.attachShader(prog, sh(gl.VERTEX_SHADER, 'void main(){gl_Position=vec4(0.0,0.0,0.0,1.0);gl_PointSize=24.0;}'));
+    gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, 'precision mediump float;void main(){gl_FragColor=vec4(1.0,0.9,0.6,1.0);}'));
+    gl.linkProgram(prog);
+    gl.enable(gl.SCISSOR_TEST);
+    canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); paused = true; canvas.style.visibility = 'hidden'; });
+    canvas.addEventListener('webglcontextrestored', () => { canvas.style.visibility = ''; paused = reduce; resize(); requestAnimationFrame(frame); });
+    function frame(t) {
+      if (gl.isContextLost()) return;
+      const k = (Math.sin(t / 300) + 1) / 2;
+      gl.scissor(0, 0, canvas.width, canvas.height); gl.clearColor(0.17, 0.13, 0.09, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+      const w = Math.round(canvas.width * (0.2 + 0.4 * k));
+      gl.scissor(Math.round((canvas.width - w) / 2), Math.round(canvas.height / 4), w, Math.round(canvas.height / 2));
+      gl.clearColor(0.76, 0.25 + 0.3 * k, 0.05, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.useProgram(prog); gl.drawArrays(gl.POINTS, 0, 1);
+      if (!paused) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  } else {
+    canvas.remove();
+  }
+</script>
+</body>
+</html>

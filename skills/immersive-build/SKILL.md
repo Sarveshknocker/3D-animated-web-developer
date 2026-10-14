@@ -31,12 +31,12 @@ Track these phases with a todo list. Do not skip phases; you may compress them f
 
 ### Phase 2 — Creative direction (use the `immersive-creative-direction` skill)
 The site must be **original and interactive**, not a template. Follow the originality engine:
-- Extract brand DNA → diverge into ≥ 5 concepts (concept dice + DNA reasoning) → kill clichés → score with the rubric → converge.
+- Subject inventory (8–12 facts only this brand has) → the argument (claim → proof per section) → diverge into ≥ 5 concepts (concept dice + inventory reasoning) → kill clichés and generated-site tells → competitor test on each idea sentence → score with the rubric → converge → copy deck.
 - Each concept has a **user verb** with a visible consequence (scrolling alone is not a verb).
 - Use `references/patterns.md` for proven *execution techniques*; use the creative skill to decide *what the experience is*.
 - Define: narrative (section by section), **one** signature moment, supporting motion system (tokens — see `immersive-motion`), device tiers (high / mid / low / reduced-motion / no-WebGL).
 
-Write `.immersive/CONCEPTS.md` (all concepts + scores) and `.immersive/EXPERIENCE_SPEC.md` (winner, from `references/experience-spec-template.md`).
+Write `.immersive/CONCEPTS.md` (inventory, argument, all concepts + scores) and `.immersive/EXPERIENCE_SPEC.md` (winner with its idea sentence, from `references/experience-spec-template.md`), plus the copy deck.
 
 **Decision point — autonomous by default.** Pick the highest-scoring concept yourself, record the top 3 and why the winner won in CONCEPTS.md, and continue without waiting. Stop and ask the user to choose **only** if they asked to review concepts ("review mode", "show me options first"), or if the top two score within 3 points *and* differ fundamentally in required assets or cost.
 
@@ -44,7 +44,7 @@ Write `.immersive/CONCEPTS.md` (all concepts + scores) and `.immersive/EXPERIENC
 - Pick the binding from the stack table in `immersive-3d-engineering` (R3F for React, TresJS for Vue, Threlte for Svelte, vanilla three.js otherwise).
 - Decide file placement following the project's existing conventions (look at where components/hooks/lib live).
 - Plan the loading strategy: what is in the critical path (DOM + poster image only), what is lazy (3D runtime, models, HDRIs), what is prefetched on idle.
-- Plan the asset pipeline: models → `gltf-transform` (meshopt + KTX2/WebP), decoders self-hosted.
+- Plan the asset pipeline: models → `gltf-transform` (meshopt + KTX2/WebP), decoders self-hosted. Missing HDRIs, materials or props: search the CC0 libraries with the `immersive-3d-engineering` asset finder; the brand's own product still needs its real model.
 - Record decisions in EXPERIENCE_SPEC.md "Architecture" section.
 
 ### Phase 4 — Implementation
@@ -62,18 +62,41 @@ Rules while coding:
 - Never block the main thread on load; never animate layout properties; no allocations inside frame loops.
 - Every `useEffect`/`onMount` that creates listeners, GSAP triggers or three.js resources must clean them up.
 
-### Phase 5 — Verification (use the `immersive-audit` skill)
+### Phase 5 — Verification (use the `immersive-audit` and `immersive-inspect` skills)
 - Run the static audit script, the project build, lint and typecheck.
-- Launch the dev server and inspect the page in the browser: desktop + mobile viewport, reduced motion emulated, WebGL-disabled fallback, keyboard-only pass.
+- Build for production, serve it, and run the **real-browser inspector** at desktop, tablet and mobile widths with the reduced-motion, no-WebGL, keyboard and context-loss passes.
 - Measure: Lighthouse (mobile) and bundle size of the lazy 3D chunk.
-- **Self-correction loop:** fix every FAIL, re-run the gates, and repeat until there are zero FAILs and the build/lint/typecheck pass (cap at 5 iterations; if still failing, report exactly what remains and why). Explain any remaining WARN in the report.
-- **Quality self-critique:** screenshot the result and compare it honestly against the concept and the rubric. If it looks like a template, has weak timing, or the interaction isn't satisfying, improve it before handing over.
+- **Self-correction loop:** fix every FAIL from the audit and the inspector, re-run, and repeat until there are zero FAILs and the build/lint/typecheck pass (cap at 5 iterations; if still failing, report exactly what remains and why). Explain any remaining WARN in the report.
+- **Look-and-fix loop:** open every screenshot the inspector saved and critique them with `immersive-inspect/references/critique.md` (weighted score, caps, top three problems). Fix, re-inspect, look again; three rounds at most. Target ≥ 7.5 weighted with no category under 7.
 - For a thorough independent review, run a sub-agent with the `agents/quality-auditor.md` brief (or adopt that role yourself in a fresh pass).
 
 ### Phase 6 — Handover
-Write `.immersive/HANDOVER.md`: what was built, files touched, how to tune (tokens, tiers, assets), how to add a new model (pipeline command), measured budgets vs targets, known limitations. Summarise to the user in ≤ 10 lines with the numbers.
+Write `.immersive/HANDOVER.md`: what was built, the idea sentence, files touched, how to tune (tokens, tiers, assets), how to add a new model (pipeline command), the inspector's measurements table and the final critique scores, accepted WARNs with reasons, asset credits (`assets.mjs credits`), sample content that must be replaced, checks that could not run, known limitations. Summarise to the user in ≤ 10 lines with the numbers.
+
+## Common rationalizations
+| Excuse | Reality |
+|---|---|
+| "It looks fine in my head / the code is right" | Only the inspector's screenshots count. Look at them. |
+| "Reduced motion is an edge case" | It is a WCAG requirement and a large share of real visitors; the inspector fails it. |
+| "Nobody browses without WebGL" | Blocked GPUs, old drivers, battery savers and context loss all hit real visitors; the page must still read completely. |
+| "FPS was low because the machine is slow" | Then say so with the renderer the report shows, and test on a real device class; do not delete the number. |
+| "The client will supply the real content later" | Ship complete sample content, list it for replacement, never invent proof. |
+| "Adding a few more effects will make it premium" | One signature moment, executed obsessively, beats ten effects. |
+
+## Red flags (stop and fix)
+- Writing 3D code before PROJECT_BRIEF.md and the idea sentence exist.
+- The idea sentence still works with a competitor's name in it.
+- Any inspector FAIL, or a WARN without a written reason.
+- Screenshots never opened before handover.
+- A claim in the report that no command measured.
+
+## Verification (definition of done)
+- [ ] `audit.mjs` has zero FAIL; build, lint and typecheck pass.
+- [ ] `inspect.mjs` exits 0 on the production build; report and screenshots in `.immersive/inspect/`.
+- [ ] Critique round recorded in `.immersive/CRITIQUE.md` with weighted score ≥ 7.5, or the shortfall stated.
+- [ ] HANDOVER.md has measurements, accepted WARNs, asset credits and replaceable sample content.
 
 ## Reference files
 - `references/patterns.md` — catalogue of signature patterns used by top brands, with cost, stack and fallbacks.
 - `references/experience-spec-template.md` — the spec document template.
-- Sibling skills: `immersive-deep-dive`, `immersive-creative-direction`, `immersive-3d-engineering`, `immersive-motion`, `mnc-web-standards`, `immersive-audit`.
+- Sibling skills: `immersive-deep-dive`, `immersive-creative-direction`, `immersive-3d-engineering`, `immersive-motion`, `mnc-web-standards`, `immersive-audit`, `immersive-inspect`.

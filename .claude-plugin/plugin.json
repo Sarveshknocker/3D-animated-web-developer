@@ -1,7 +1,20 @@
 {
   "name": "jarvis-immersive",
-  "version": "0.1.0",
-  "description": "Deep-dives your project and builds unique, MNC-grade 3D / animated websites (three.js, R3F, GSAP) with production quality gates.",
-  "author": { "name": "Sarvesh", "url": "https://github.com/Sarveshknocker" },
-  "keywords": ["3d", "webgl", "threejs", "animation", "gsap", "frontend"]
+  "version": "0.2.0",
+  "description": "Deep-dives your project and builds unique, MNC-grade 3D / animated websites (three.js, R3F, GSAP), verified in a real browser with production quality gates.",
+  "author": {
+    "name": "Sarvesh",
+    "url": "https://github.com/Sarveshknocker"
+  },
+  "keywords": [
+    "3d",
+    "webgl",
+    "threejs",
+    "animation",
+    "gsap",
+    "frontend"
+  ],
+  "repository": "https://github.com/Sarveshknocker/3D-animated-web-developer",
+  "homepage": "https://github.com/Sarveshknocker/3D-animated-web-developer",
+  "license": "MIT"
 }

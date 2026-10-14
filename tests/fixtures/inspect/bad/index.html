@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bad immersive fixture</title>
+<style>
+  body { margin: 0; font: 18px/1.5 system-ui, sans-serif; }
+  canvas { width: 100%; height: 60vh; display: block; }
+  .wide { width: 1600px; height: 10px; background: #333; }
+  .reveal { opacity: 0; }
+  .shown .reveal { opacity: 1; }
+  button:focus { outline: none; }
+</style>
+</head>
+<body>
+<canvas></canvas>
+<h1>Generic hero</h1>
+<h3>Skipped a level</h3>
+<p class="reveal">This copy only appears once the 3D scene has booted.</p>
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="10" height="10">
+<a href="#top">Back to top</a>
+<button type="button"></button>
+<div class="wide"></div>
+<script>
+  const canvas = document.querySelector('canvas');
+  const gl = canvas.getContext('webgl');
+  canvas.width = canvas.clientWidth * 3; canvas.height = canvas.clientHeight * 3; // no DPR clamp
+  gl.viewport(0, 0, canvas.width, canvas.height); // throws when WebGL is unavailable
+  document.body.classList.add('shown');
+  function frame(t) {
+    const k = (Math.sin(t / 200) + 1) / 2;
+    gl.clearColor(k, 0.2, 1 - k, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+    requestAnimationFrame(frame); // ignores prefers-reduced-motion and context loss
+  }
+  requestAnimationFrame(frame);
+  // Swallows Tab: a keyboard trap.
+  document.querySelector('button').addEventListener('keydown', (e) => { if (e.key === 'Tab') e.preventDefault(); });
+  canvas.addEventListener('webglcontextlost', () => { throw new Error('scene crashed on context loss'); });
+</script>
+</body>
+</html>

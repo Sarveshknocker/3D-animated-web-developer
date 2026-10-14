@@ -1,0 +1,35 @@
+{
+  "name": "jarvis-immersive",
+  "version": "0.2.0",
+  "description": "Deep-dives your project and builds unique, production-grade 3D / animated websites, verified in a real browser.",
+  "author": {
+    "name": "Sarvesh",
+    "url": "https://github.com/Sarveshknocker"
+  },
+  "homepage": "https://github.com/Sarveshknocker/3D-animated-web-developer",
+  "repository": "https://github.com/Sarveshknocker/3D-animated-web-developer",
+  "license": "MIT",
+  "keywords": [
+    "3d",
+    "webgl",
+    "threejs",
+    "animation",
+    "gsap",
+    "frontend"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Jarvis Immersive",
+    "shortDescription": "Original, interactive 3D websites with real-browser quality gates.",
+    "longDescription": "Studies your project, finds an idea only your brand could own, builds it natively in your stack (three.js, R3F, TresJS, Threlte, GSAP) and proves it in a real browser: reduced motion, no-WebGL fallback, keyboard, context loss, vitals and a screenshot critique loop.",
+    "developerName": "Sarvesh",
+    "category": "Design",
+    "capabilities": [],
+    "websiteURL": "https://github.com/Sarveshknocker/3D-animated-web-developer",
+    "defaultPrompt": [
+      "Deep-dive this project and build an original interactive 3D homepage.",
+      "Inspect our 3D site in a real browser and fix what would fail review.",
+      "Find CC0 HDRIs and materials for this scene."
+    ]
+  }
+}
